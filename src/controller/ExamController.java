@@ -8,15 +8,6 @@ package controller;
 import domain.Exam;
 
 public class ExamController {
-    private Exam exam;
-
-    public ExamController(){
-        exam = new Exam();
-    }
-
-    public Exam getExam() {
-        return exam;
-    }
 
     /**
      * update user's score
@@ -24,7 +15,7 @@ public class ExamController {
      * @param score the score that user get this problem
      * @return
      */
-    public void updateScore(int score){
+    public void updateScore(int score, Exam exam){
         exam.setScore(exam.getScore()+score);
     }
 
@@ -34,7 +25,7 @@ public class ExamController {
      * @param
      * @return
      */
-    public void reset(){
+    public void reset(Exam exam){
         exam.setScore(0);
         exam.setCurrentLineNo(0);
         exam.setCurrentProblemId(1);
@@ -46,11 +37,11 @@ public class ExamController {
      * @param maxProblem the number of all the problems, get with TxtController
      * @return true - update is completed. false - no more problems
      */
-    public boolean nextProblem(int maxProblem){
+    public boolean nextProblem(int maxProblem,Exam exam){
         if(exam.getCurrentProblemId()+1<=maxProblem)
         {
             exam.setCurrentProblemId(exam.getCurrentProblemId() + 1);
-            exam.setCurrentLineNo(exam.getCurrentLineNo() + 7);
+            exam.setCurrentLineNo(exam.getCurrentLineNo() + 8);
             return true;
         }
         else{

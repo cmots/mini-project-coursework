@@ -12,6 +12,7 @@ public class Problem {
     private String problem;
     private ArrayList<String> answers;
     private String[] options;
+    private String difficulty;
 
     public int getProblemId() {
         return problemId;
@@ -45,4 +46,11 @@ public class Problem {
         this.options = options;
     }
 
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
 }

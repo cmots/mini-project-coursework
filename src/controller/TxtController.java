@@ -35,6 +35,7 @@ public class TxtController {
      * @author: cmots
      * @param
      * @return
+     * @throws Exception FileNotFoundException
      */
     public void readTxt() throws Exception{
         File filename = new File(this.pathname);

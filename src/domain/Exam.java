@@ -9,6 +9,7 @@ public class Exam {
     private int currentLineNo = 0;
     private int currentProblemId = 1;
     private int score = 0;
+    private String difficultySelected;
 
     public int getCurrentLineNo() {
         return currentLineNo;
@@ -32,6 +33,14 @@ public class Exam {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public String getDifficultySelected() {
+        return difficultySelected;
+    }
+
+    public void setDifficultySelected(String difficultySelected) {
+        this.difficultySelected = difficultySelected;
     }
 
 }
