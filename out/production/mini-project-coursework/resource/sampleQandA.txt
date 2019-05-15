@@ -1,0 +1,27 @@
+Question: What is the capital of France?
+Easy
+Paris [Correct]
+Beijing
+London
+Rio
+
+Question: What nationality was Newton?
+Easy
+English [Correct]
+Japanese
+French
+Chinese
+
+Question: What is the chemical symbol for hydrogen?
+Easy
+H [Correct]
+A
+B
+C
+
+Question: When did man land on the moon?
+Easy
+1969 [Correct]
+1066
+1215
+2001

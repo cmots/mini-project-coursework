@@ -15,8 +15,8 @@ public class ExamController {
      * @param score the score that user get this problem
      * @return
      */
-    public void updateScore(int score, Exam exam){
-        exam.setScore(exam.getScore()+score);
+    public static void updateScore(Exam exam,int score){
+        exam.setScore(exam.getScore() + score);
     }
 
     /**
@@ -25,7 +25,7 @@ public class ExamController {
      * @param
      * @return
      */
-    public void reset(Exam exam){
+    public static void reset(Exam exam){
         exam.setScore(0);
         exam.setCurrentLineNo(0);
         exam.setCurrentProblemId(1);
@@ -37,7 +37,7 @@ public class ExamController {
      * @param maxProblem the number of all the problems, get with TxtController
      * @return true - update is completed. false - no more problems
      */
-    public boolean nextProblem(int maxProblem,Exam exam){
+    public static boolean nextProblem(Exam exam,int maxProblem){
         if(exam.getCurrentProblemId()+1<=maxProblem)
         {
             exam.setCurrentProblemId(exam.getCurrentProblemId() + 1);

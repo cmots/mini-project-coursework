@@ -15,11 +15,11 @@ public class TxtController {
 
     private final String pathname = "src\\resource\\sampleQandA.txt";
 
-    private int problemsNum = 0;
+    private static int problemsNum = 0;
 
     private ArrayList<String> strings;
 
-    public int getProblemsNum() {
+    public static int getProblemsNum() {
         return problemsNum;
     }
 

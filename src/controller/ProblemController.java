@@ -12,11 +12,10 @@ import java.util.ArrayList;
 
 public class ProblemController {
 
-
     /**
      * get the current problem and return it to view layer
      * @author: cmots
-     * @param
+     * @param exam the basic data of this exam
      * @param txtController the controller of txt file, including the whole txt data
      * @return a complete problem
      */
@@ -55,15 +54,61 @@ public class ProblemController {
         return problem;
     }
 
-    public boolean judge(Problem problem,ArrayList<String> answers){
+    /**
+     *
+     * @author: cmots
+     * @param exam the basic data of this exam
+     * @param problem the current problem
+     * @param answers answer(s) that user choose
+     * @return 0:you are right
+     * @return 1:you are wrong but still one chance
+     * @return 2:wrong and have no chance
+     */
+    public int judge(Exam exam,Problem problem,ArrayList<String> answers){
 
         ArrayList<String> correctAnswers = problem.getAnswers();
+        int score;
+
+        if(problem.getDifficulty()=="Easy"){
+            score = 1;
+        }
+        else if(problem.getDifficulty()=="Medium"){
+            score = 2;
+        }
+        else {
+            score = 3;
+        }
 
         //a single choice question
         if(correctAnswers.size()==1){
             //answer is right
             if(correctAnswers.get(0) == answers.get(0)){
+                ExamController.updateScore(exam,score);
+                return 0;
+            }
+            else{
+                return 2;
+            }
+        }
 
+        //a multiple choice question
+        else {
+            if(correctAnswers.contains(answers.get(0))&&correctAnswers.contains(answers.get(1))){
+                //all is correct
+                ExamController.updateScore(exam,score * problem.getScoreTimes());
+                return 0;
+            }
+            else{
+                //answer is wrong
+                if(problem.getScoreTimes()>1){
+                    //first attempt
+                    problem.setScoreTimes(1);
+                    return 1;
+                }
+                else{
+                    //second attempt
+                    return 2;
+                }
             }
         }
     }

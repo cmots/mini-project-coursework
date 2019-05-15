@@ -13,6 +13,7 @@ public class Problem {
     private ArrayList<String> answers;
     private String[] options;
     private String difficulty;
+    private int scoreTimes = 2;
 
     public int getProblemId() {
         return problemId;
@@ -52,5 +53,13 @@ public class Problem {
 
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public int getScoreTimes() {
+        return scoreTimes;
+    }
+
+    public void setScoreTimes(int scoreTimes) {
+        this.scoreTimes = scoreTimes;
     }
 }

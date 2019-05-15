@@ -5,5 +5,11 @@
  */
 package view;
 
+import domain.Exam;
+
 public class ProblemView {
+
+    public ProblemView(Exam exam){
+
+    }
 }
