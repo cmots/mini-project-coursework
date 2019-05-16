@@ -11,6 +11,7 @@ public class Exam {
     private int score = 0;
     private String difficultySelected;
     private int maxNum = 0;
+    private int maxLine = 0;
 
     public int getCurrentLineNo() {
         return currentLineNo;
@@ -50,5 +51,13 @@ public class Exam {
 
     public void setMaxNum(int maxNum) {
         this.maxNum = maxNum;
+    }
+
+    public int getMaxLine() {
+        return maxLine;
+    }
+
+    public void setMaxLine(int maxLine) {
+        this.maxLine = maxLine;
     }
 }

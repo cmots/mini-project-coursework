@@ -21,7 +21,6 @@ public class ProblemController {
      */
     public static Problem getProblem(Exam exam,TxtController txtController){
         Problem problem = new Problem();
-        int currentLineNo = exam.getCurrentLineNo();
 
         //set id
         problem.setProblemId(exam.getCurrentProblemId());
@@ -29,17 +28,20 @@ public class ProblemController {
         //set difficulty
         problem.setDifficulty(txtController.getStrings().get(exam.getCurrentLineNo()+1));
 
-        //set problem
-        problem.setProblem(txtController.getStrings().get(exam.getCurrentLineNo()).substring(9));
-
         while (!problem.getDifficulty().equals(exam.getDifficultySelected())){
             if(ExamController.nextLines(exam)==false){
                 return null;
             }
+            problem.setDifficulty(txtController.getStrings().get(exam.getCurrentLineNo()+1));
         }
+
+        //set problem
+        problem.setProblem(txtController.getStrings().get(exam.getCurrentLineNo()).substring(9));
+
         String[] options = new String[4];
         ArrayList<String> answers = new ArrayList<>();
 
+        int currentLineNo = exam.getCurrentLineNo();
         //set answers and options
         for(int i = 2;i < 6;i++){
             String temp = txtController.getStrings().get(i + currentLineNo);

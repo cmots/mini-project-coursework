@@ -48,11 +48,13 @@ public class TxtController {
         if("".equals(line)){
             emptyTag = 1;
         }
+
         while(line!=null){
             line=bufferedReader.readLine();
             if(!"".equals(line)) {
                 this.strings.add(line);
             }
         }
+
     }
 }

@@ -29,6 +29,7 @@ public class ProblemView {
     ArrayList<String> userAnswer = new ArrayList<>();
     Exam exam;
     private JTextArea message;
+    Problem problem = new Problem();
 
     public ProblemView(Exam exam){
         try{
@@ -107,13 +108,19 @@ public class ProblemView {
                     new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            buttonAction(ProblemController.getProblem(exam,txtController),button.getText());
-                            button.setForeground(Color.RED);
+                            if(button.getForeground()==Color.BLACK) {
+                                userAnswer.add(button.getText());
+                                button.setForeground(Color.RED);
+                            }
+                            else{
+                                userAnswer.remove(0);
+                                button.setForeground(Color.BLACK);
+                            }
+                            buttonAction();
                         }
                     }
             );
         }
-
         frame.setVisible(true);
     }
 
@@ -151,9 +158,12 @@ public class ProblemView {
      * actions when click option buttons
      * @author: cmots
      */
-    private void buttonAction(Problem problem, String chooseAnswer) {
-        userAnswer.add(chooseAnswer);
+    private void buttonAction() {
         int result;
+
+        if(problem.getScoreTimes()==2){
+            problem = ProblemController.getProblem(exam,txtController);
+        }
 
         if (userAnswer.size() == problem.getAnswers().size()) {
             result = ProblemController.judge(exam, problem, userAnswer);
@@ -166,7 +176,6 @@ public class ProblemView {
             message.setText("last question :right    ");
             if (ExamController.nextProblem(exam)){
                 setText(ProblemController.getProblem(exam,txtController));
-                System.out.println(problem.getScoreTimes());
             } else {
                 scoreText.setText("score = "+ exam.getScore());
                 noMoreQuestions();

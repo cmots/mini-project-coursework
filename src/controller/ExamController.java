@@ -40,7 +40,7 @@ public class ExamController {
      * @return true - update is completed. false - no more problems
      */
     public static boolean nextLines(Exam exam){
-        if(exam.getCurrentProblemId() < exam.getMaxNum())
+        if(exam.getCurrentLineNo() < exam.getMaxLine())
         {
             exam.setCurrentLineNo(exam.getCurrentLineNo() + 6);
             return true;
@@ -64,5 +64,6 @@ public class ExamController {
     public static void setMaxNum(Exam exam,TxtController txtController){
         int counter = Collections.frequency(txtController.getStrings(),exam.getDifficultySelected());
         exam.setMaxNum(counter);
+        exam.setMaxLine(txtController.getStrings().size());
     }
 }

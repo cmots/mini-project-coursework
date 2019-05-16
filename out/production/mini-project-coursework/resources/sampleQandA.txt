@@ -26,9 +26,16 @@ Easy
 1215
 2001
 
-Question: What are nutrient for human
+Question: What are nutrient for human?
 Easy
 Water [Correct]
 Fat [Correct]
 Coke
 Java
+
+Question: What are KUN like doing?
+Medium
+Singing [Correct]
+Coding
+Rap [Correct]
+Dota2
