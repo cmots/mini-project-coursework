@@ -1,4 +1,5 @@
 import domain.Exam;
+import view.DifficultyView;
 
 /**
  * @author: cmots
@@ -7,9 +8,9 @@ import domain.Exam;
  */
 
 public class MultipleChoiceGui {
-    public static Exam exam = new Exam();
-    public static void main(String Args[]){
 
+    public static void main(String Args[]){
+        DifficultyView difficultyView = new DifficultyView();
 
     }
 }

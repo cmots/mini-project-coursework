@@ -55,20 +55,20 @@ public class ProblemController {
     }
 
     /**
-     *
+     * judge user's answer, and update score
      * @author: cmots
      * @param exam the basic data of this exam
      * @param problem the current problem
-     * @param answers answer(s) that user choose
+     * @param userAnswers answer(s) that user choose
      * @return 0:you are right
      * @return 1:you are wrong but still one chance
      * @return 2:wrong and have no chance
      */
-    public int judge(Exam exam,Problem problem,ArrayList<String> answers){
-
+    public int judge(Exam exam,Problem problem,ArrayList<String> userAnswers){
         ArrayList<String> correctAnswers = problem.getAnswers();
         int score;
 
+        //get the difficulty of problem and set score of each problem
         if(problem.getDifficulty()=="Easy"){
             score = 1;
         }
@@ -82,7 +82,7 @@ public class ProblemController {
         //a single choice question
         if(correctAnswers.size()==1){
             //answer is right
-            if(correctAnswers.get(0) == answers.get(0)){
+            if(correctAnswers.get(0) == userAnswers.get(0)){
                 ExamController.updateScore(exam,score);
                 return 0;
             }
@@ -93,7 +93,7 @@ public class ProblemController {
 
         //a multiple choice question
         else {
-            if(correctAnswers.contains(answers.get(0))&&correctAnswers.contains(answers.get(1))){
+            if(correctAnswers.contains(userAnswers.get(0))&&correctAnswers.contains(userAnswers.get(1))){
                 //all is correct
                 ExamController.updateScore(exam,score * problem.getScoreTimes());
                 return 0;
