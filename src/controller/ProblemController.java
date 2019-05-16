@@ -19,19 +19,24 @@ public class ProblemController {
      * @param txtController the controller of txt file, including the whole txt data
      * @return a complete problem
      */
-    public Problem getProblem(Exam exam,TxtController txtController){
+    public static Problem getProblem(Exam exam,TxtController txtController){
         Problem problem = new Problem();
         int currentLineNo = exam.getCurrentLineNo();
 
         //set id
         problem.setProblemId(exam.getCurrentProblemId());
 
-        //set problem
-        problem.setProblem(txtController.getStrings().get(exam.getCurrentLineNo()).substring(9));
-
         //set difficulty
         problem.setDifficulty(txtController.getStrings().get(exam.getCurrentLineNo()+1));
 
+        //set problem
+        problem.setProblem(txtController.getStrings().get(exam.getCurrentLineNo()).substring(9));
+
+        while (!problem.getDifficulty().equals(exam.getDifficultySelected())){
+            if(ExamController.nextLines(exam)==false){
+                return null;
+            }
+        }
         String[] options = new String[4];
         ArrayList<String> answers = new ArrayList<>();
 
@@ -64,15 +69,15 @@ public class ProblemController {
      * @return 1:you are wrong but still one chance
      * @return 2:wrong and have no chance
      */
-    public int judge(Exam exam,Problem problem,ArrayList<String> userAnswers){
+    public static int judge(Exam exam,Problem problem,ArrayList<String> userAnswers){
         ArrayList<String> correctAnswers = problem.getAnswers();
         int score;
 
         //get the difficulty of problem and set score of each problem
-        if(problem.getDifficulty()=="Easy"){
+        if("Easy".equals(problem.getDifficulty())){
             score = 1;
         }
-        else if(problem.getDifficulty()=="Medium"){
+        else if("Medium".equals(problem.getDifficulty())){
             score = 2;
         }
         else {
@@ -81,8 +86,9 @@ public class ProblemController {
 
         //a single choice question
         if(correctAnswers.size()==1){
+
             //answer is right
-            if(correctAnswers.get(0) == userAnswers.get(0)){
+            if(correctAnswers.get(0).equals(userAnswers.get(0))){
                 ExamController.updateScore(exam,score);
                 return 0;
             }

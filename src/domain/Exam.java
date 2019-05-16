@@ -10,6 +10,7 @@ public class Exam {
     private int currentProblemId = 1;
     private int score = 0;
     private String difficultySelected;
+    private int maxNum = 0;
 
     public int getCurrentLineNo() {
         return currentLineNo;
@@ -43,4 +44,11 @@ public class Exam {
         this.difficultySelected = difficultySelected;
     }
 
+    public int getMaxNum() {
+        return maxNum;
+    }
+
+    public void setMaxNum(int maxNum) {
+        this.maxNum = maxNum;
+    }
 }

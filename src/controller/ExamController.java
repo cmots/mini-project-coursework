@@ -7,6 +7,8 @@ package controller;
 
 import domain.Exam;
 
+import java.util.Collections;
+
 public class ExamController {
 
     /**
@@ -34,14 +36,13 @@ public class ExamController {
     /**
      * update the mark of problems
      * @author: cmots
-     * @param maxProblem the number of all the problems, get with TxtController
+     * @param exam the entity class of all exam
      * @return true - update is completed. false - no more problems
      */
-    public static boolean nextProblem(Exam exam,int maxProblem){
-        if(exam.getCurrentProblemId()+1<=maxProblem)
+    public static boolean nextLines(Exam exam){
+        if(exam.getCurrentProblemId() < exam.getMaxNum())
         {
-            exam.setCurrentProblemId(exam.getCurrentProblemId() + 1);
-            exam.setCurrentLineNo(exam.getCurrentLineNo() + 8);
+            exam.setCurrentLineNo(exam.getCurrentLineNo() + 6);
             return true;
         }
         else{
@@ -49,4 +50,19 @@ public class ExamController {
         }
     }
 
+    public static boolean nextProblem(Exam exam){
+        if(exam.getCurrentProblemId() < exam.getMaxNum())
+        {
+            exam.setCurrentProblemId(exam.getCurrentProblemId() + 1);
+            exam.setCurrentLineNo(exam.getCurrentLineNo() + 6);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public static void setMaxNum(Exam exam,TxtController txtController){
+        int counter = Collections.frequency(txtController.getStrings(),exam.getDifficultySelected());
+        exam.setMaxNum(counter);
+    }
 }

@@ -5,6 +5,7 @@
  */
 package view;
 
+import controller.ExamController;
 import domain.Exam;
 
 import javax.swing.*;
@@ -22,17 +23,18 @@ public class DifficultyView {
 
     public DifficultyView(){
         //instantiate the basic components
+        JFrame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame("Multiple Choice Questions");
         textArea = new JTextArea();
         radioButtons = new JRadioButton[3];
         okBtn = new JButton("Let's start!");
         frame.setSize(300,200);
+        frame.setLocation(220,160);
         radioButtons[0] = new JRadioButton("Easy",false);
         radioButtons[1] = new JRadioButton("Medium",true);
         radioButtons[2] = new JRadioButton("Hard",false);
 
         //some extra settings
-        JFrame.setDefaultLookAndFeelDecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //single choice radio buttons

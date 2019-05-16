@@ -5,11 +5,17 @@
  */
 package view;
 
+import controller.ExamController;
+import controller.ProblemController;
+import controller.TxtController;
 import domain.Exam;
 import domain.Problem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class ProblemView {
     JFrame frame;
@@ -19,17 +25,32 @@ public class ProblemView {
     private JButton[] buttons;
     private JButton restartBtn;
     private JTextArea scoreText;
+    TxtController txtController;
+    ArrayList<String> userAnswer = new ArrayList<>();
+    Exam exam;
+    private JTextArea message;
 
     public ProblemView(Exam exam){
+        try{
+            txtController = new TxtController();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        ExamController.setMaxNum(exam,txtController);
+        this.exam=exam;
         //instantiate the basic components
+        JFrame.setDefaultLookAndFeelDecorated(true);
         frame = new JFrame("Multiple Choice Questions");
         textArea = new JTextArea();
         buttons = new JButton[4];
         panel1 = new JPanel();
         panel2 = new JPanel();
         restartBtn = new JButton("reset score");
-        frame.setSize(350,250);
+        frame.setSize(380,260);
+        frame.setLocation(220,160);
         scoreText = new JTextArea();
+        message = new JTextArea();
 
         for(int i=0;i<4;i++)
         {
@@ -40,7 +61,7 @@ public class ProblemView {
         frame.getContentPane().add(panel2,BorderLayout.SOUTH);
 
         //some extra settings
-        JFrame.setDefaultLookAndFeelDecorated(true);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel1.setLayout(new GridLayout(4,1));
         panel2.setLayout(new FlowLayout());
@@ -52,6 +73,7 @@ public class ProblemView {
 
         //set the position
         frame.add(textArea,BorderLayout.NORTH);
+        panel2.add(message,BorderLayout.WEST);
         panel2.add(scoreText);
         panel2.add(restartBtn);
 
@@ -62,14 +84,58 @@ public class ProblemView {
         scoreText.setEditable(false);
         scoreText.setBackground(Color.WHITE);
 
+        if(txtController.getEmptyTag()==1){
+            panel1.removeAll();
+            textArea.setText("error!txt file is empty!");
+            panel1.repaint();
+        }
+
+        setText(ProblemController.getProblem(exam,txtController));
+        //listener
+        restartBtn.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        ExamController.reset(exam);
+                        frame.dispose();
+                        DifficultyView difficultyView = new DifficultyView();
+                    }
+                }
+        );
+        for(JButton button : buttons){
+            button.addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            buttonAction(ProblemController.getProblem(exam,txtController),button.getText());
+                            button.setForeground(Color.RED);
+                        }
+                    }
+            );
+        }
+
         frame.setVisible(true);
     }
 
-    private void setText(Exam exam, Problem problem){
-        textArea.setText(problem.getProblem());
+    /**
+     * set all text to frame
+     * @author: cmots
+     * @param problem this problem
+     * @return
+     */
+    private void setText(Problem problem){
+        if(problem == null){
+            panel1.removeAll();
+            textArea.setText("error!no question is the difficulty you chose!");
+            panel1.repaint();
+            return;
+        }
+        textArea.setText("Question " + exam.getCurrentProblemId() + " of " + exam.getMaxNum() + ": " + problem.getProblem());
         scoreText.setText("score = "+ exam.getScore());
         for(int i=0;i<4;i++){
             buttons[i].setText(problem.getOptions()[i]);
+            buttons[i].setForeground(Color.BLACK);
+            buttons[i].repaint();
         }
         //single choice question
         if(problem.getAnswers().size()==1){
@@ -78,5 +144,62 @@ public class ProblemView {
         else{
             panel1.setBorder(BorderFactory.createTitledBorder("Possible Answers: click two"));
         }
+
+    }
+
+    /**
+     * actions when click option buttons
+     * @author: cmots
+     */
+    private void buttonAction(Problem problem, String chooseAnswer) {
+        userAnswer.add(chooseAnswer);
+        int result;
+
+        if (userAnswer.size() == problem.getAnswers().size()) {
+            result = ProblemController.judge(exam, problem, userAnswer);
+        } else {
+            return;
+        }
+
+        if (result == 0) {
+            userAnswer.clear();
+            message.setText("last question :right    ");
+            if (ExamController.nextProblem(exam)){
+                setText(ProblemController.getProblem(exam,txtController));
+                System.out.println(problem.getScoreTimes());
+            } else {
+                scoreText.setText("score = "+ exam.getScore());
+                noMoreQuestions();
+            }
+        } else if (result == 1) {
+            userAnswer.clear();
+            message.setText("you are wrong but\nhave another chance");
+            setText(ProblemController.getProblem(exam,txtController));
+        } else {
+            userAnswer.clear();
+            message.setText("last question: wrong    ");
+            if (ExamController.nextProblem(exam)) {
+                setText(ProblemController.getProblem(exam,txtController));
+            } else {
+                scoreText.setText("score = "+ exam.getScore());
+                noMoreQuestions();
+            }
+        }
+    }
+    /**
+     * when here are no more question, what will happen
+     * @author: cmots
+     * @param
+     * @return
+     */
+    private void noMoreQuestions(){
+        panel1.removeAll();
+        panel1.setBorder(BorderFactory.createTitledBorder("want to continue?"));
+        JTextArea area = new JTextArea("Restart or quit!\n" +
+                "restart can choose another difficulty and see more questions!");
+        area.setEditable(false);
+        panel1.add(area,BorderLayout.CENTER);
+        textArea.setText("No more questions!");
+        panel1.repaint();
     }
 }

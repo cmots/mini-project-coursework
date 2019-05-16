@@ -13,18 +13,18 @@ import java.util.ArrayList;
 
 public class TxtController {
 
-    private final String pathname = "src\\resource\\sampleQandA.txt";
+    private final String pathname = "src\\resources\\sampleQandA.txt";
 
-    private static int problemsNum = 0;
+    private int emptyTag = 0;
 
     private ArrayList<String> strings;
 
-    public static int getProblemsNum() {
-        return problemsNum;
-    }
-
     public ArrayList<String> getStrings() {
         return strings;
+    }
+
+    public int getEmptyTag() {
+        return emptyTag;
     }
 
     public TxtController() throws Exception {
@@ -43,29 +43,16 @@ public class TxtController {
         BufferedReader bufferedReader = new BufferedReader(reader);
         String line = "";
         line = bufferedReader.readLine();
-        if(!line.equals("")){
-            updateProblemsNum();
-        }
         this.strings = new ArrayList<>();
+        strings.add(line);
+        if("".equals(line)){
+            emptyTag = 1;
+        }
         while(line!=null){
             line=bufferedReader.readLine();
-            if(line.equals("")) {
-                updateProblemsNum();
-            }
-            else{
+            if(!"".equals(line)) {
                 this.strings.add(line);
             }
         }
     }
-
-    /**
-     * while read a empty line, it means a problem is ending
-     * @author: cmots
-     * @param
-     * @return
-     */
-    public void updateProblemsNum(){
-        this.problemsNum++;
-    }
-
 }
